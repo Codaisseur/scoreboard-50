@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import Player from "./Player";
+import AddPlayerForm from "./AddPlayer";
 
 const initialState = [
   { name: "Matias", score: 1, id: 1 },
@@ -9,6 +10,8 @@ const initialState = [
 
 const Scoreboard = () => {
   const [players, setPlayers] = useState(initialState);
+
+  // to keep what is the sorting
   const [sortBy, setSortBy] = useState("score");
 
   // callback prop
@@ -20,6 +23,19 @@ const Scoreboard = () => {
         return p;
       }
     });
+    setPlayers(updatedPlayers);
+  };
+
+  const onAddPlayer = newPlayerName => {
+    console.log("adding a player in scoreboard", newPlayerName);
+
+    // 1. a new name
+    // 2. the array with the players
+
+    const newPlayer = { name: newPlayerName, score: 0, id: players.length + 1 };
+
+    const updatedPlayers = [...players, newPlayer];
+
     setPlayers(updatedPlayers);
   };
 
@@ -35,6 +51,8 @@ const Scoreboard = () => {
   } else {
     sortedPlayers.sort((a, b) => a.name.localeCompare(b.name));
   }
+
+  console.log("players", players);
 
   return (
     <div>
@@ -59,6 +77,7 @@ const Scoreboard = () => {
           );
         })}
       </div>
+      <AddPlayerForm onAddPlayer={onAddPlayer} />
     </div>
   );
 };
